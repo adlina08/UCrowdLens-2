@@ -1,0 +1,112 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <!-- HEADER / LOCATION SELECTOR -->
+    <section class="dashboard-heading">
+        <p class="m">REAL-TIME CROWD MONITORING</p>
+        <h1 class="d h-xl">Crowd<br>Overview.</h1>
+        <p class="m dashboard-subtitle">
+            Monitor crowd levels across UiTM public areas.
+        </p>
+
+        <div class="location-selector">
+            <label for="location-select" class="m xs">
+                SELECT MONITORING LOCATION
+            </label>
+
+            <select
+                id="location-select"
+                class="location-dropdown"
+                onchange="if (this.value) window.location.href=this.value">
+
+                {% for l in locations %}
+                <option
+                    value="{{ url_for('public.dashboard', loc=l['LOCATIONID']) }}"
+                    {% if l['LOCATIONID']|string == selected|string %}selected{% endif %}>
+                    {{ l['LOCATION_NAME'] }}
+                </option>
+                {% endfor %}
+
+            </select>
+        </div>
+    </section>
+
+
+    <!-- PEOPLE COUNT -->
+    <section class="dashboard-count">
+        <div class="section-heading">
+            <div>
+                <p class="m xs">CURRENT LOCATION</p>
+                <h2 class="d h-md">People Count</h2>
+            </div>
+            <span class="status-dot"></span>
+        </div>
+
+        <iframe
+            class="panel-frame"
+            src="/panel"
+            title="Live crowd count"
+            scrolling="no">
+        </iframe>
+
+        <p class="m xs dashboard-footnote">
+            Crowd level updates from the detection system.
+        </p>
+    </section>
+
+
+    <!-- LIVE CAMERA -->
+    <section class="dashboard-camera">
+        <div class="section-heading">
+            <div>
+                <p class="m xs">CAMERA FEED</p>
+                <h2 class="d h-md">Live Camera</h2>
+            </div>
+            <span class="camera-status">
+                <i></i> LIVE
+            </span>
+        </div>
+
+        <div class="feed">
+            <img
+                src="{{ url_for('public.video') }}"
+                alt="Live crowd camera feed">
+        </div>
+
+        <p class="m xs dashboard-footnote">
+            Live view of the selected monitoring area.
+        </p>
+    </section>
+
+
+    <!-- CROWD HISTORY GRAPH -->
+    <section class="dashboard-chart c">
+        <div class="section-heading">
+            <div>
+                <p class="m xs">HISTORICAL DATA</p>
+                <h2 class="d h-md">Busiest Hours</h2>
+            </div>
+            <span class="chart-icon">↗</span>
+        </div>
+
+        <p class="m xs dashboard-chart-description">
+            Average recorded people by hour.
+        </p>
+
+        <img
+            class="chart-image"
+            src="{{ url_for('public.chart') }}"
+            alt="Chart showing average crowd count by hour">
+
+        <p class="m xs dashboard-footnote">
+            Based on saved crowd monitoring records.
+        </p>
+    </section>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,140 @@
+
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="d h-lg">Logs</h1>
+<p class="m lead sm">
+    Filter the recorded counts, then download your crowd logs as a CSV file.
+</p>
+
+<!-- FILTER FORM -->
+<form method="get" action="{{ url_for('logs.logs') }}" class="c grid14">
+
+    <div class="two">
+        <label class="f">
+            <span>From</span>
+            <input type="date" name="date_from"
+                   value="{{ f.get('date_from', '') }}">
+        </label>
+
+        <label class="f">
+            <span>To</span>
+            <input type="date" name="date_to"
+                   value="{{ f.get('date_to', '') }}">
+        </label>
+    </div>
+
+    <label class="f">
+        <span>Location</span>
+        <select name="location">
+            <option value="">All locations</option>
+
+            {% for l in locations %}
+            <option value="{{ l['LOCATIONID'] }}"
+                {% if f.get('location', '') == l['LOCATIONID']|string %}selected{% endif %}>
+                {{ l['LOCATION_NAME'] }}
+            </option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label class="f">
+        <span>Level</span>
+        <select name="density">
+            <option value="">All levels</option>
+
+            {% for d in ['Low', 'Medium', 'High'] %}
+            <option value="{{ d }}"
+                {% if f.get('density', '') == d %}selected{% endif %}>
+                {{ d }}
+            </option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <div class="two">
+        <button type="submit" class="btn">Apply filter</button>
+
+        <a class="btn gh"
+           href="{{ url_for('logs.download', date_from=f.get('date_from', ''), date_to=f.get('date_to', ''), location=f.get('location', ''), density=f.get('density', '')) }}">
+            Download CSV
+        </a>
+    </div>
+
+</form>
+
+<!-- RECORDS HEADER -->
+<div class="rec-h">
+    <h2 class="d h-md">Records</h2>
+
+    <span class="m">
+        Showing
+        {{ ((page - 1) * 50) + 1 if total > 0 else 0 }}–{{ ((page - 1) * 50) + logs|length }}
+        of {{ total }}
+    </span>
+</div>
+
+<!-- RECORDS LIST -->
+<div>
+    {% for r in logs %}
+    <div class="rec">
+
+        <div class="d n">
+            {{ r['CROWD_COUNT'] }}
+        </div>
+
+        <div style="flex:1">
+            <div class="nm">
+                {{ r['LOCATION_NAME'].split(',')[0] }}
+            </div>
+
+            <div class="m xs">
+                {{ r['TIMESTAMP']|fmt_time }}
+            </div>
+        </div>
+
+        <span class="lv {{ r['DENSITY_LEVEL'] }}">
+            {{ r['DENSITY_LEVEL'] }}
+        </span>
+
+    </div>
+
+    {% else %}
+    <p class="m" style="padding:14px 0">
+        No records found.
+    </p>
+    {% endfor %}
+</div>
+
+
+<!-- PAGINATION -->
+{% if total_pages > 1 %}
+<nav class="pagination">
+
+    {% if page > 1 %}
+    <a class="page-btn"
+       href="{{ url_for('logs.logs', page=page-1, date_from=f.get('date_from', ''), date_to=f.get('date_to', ''), location=f.get('location', ''), density=f.get('density', '')) }}"
+       aria-label="Previous page">
+        &larr;
+    </a>
+    {% else %}
+    <span class="page-btn disabled">&larr;</span>
+    {% endif %}
+
+    <span class="page-info">
+        Showing {{ ((page - 1) * 50) + 1 }}–{{ ((page - 1) * 50) + logs|length }}
+        of {{ total }}
+    </span>
+
+    {% if page < total_pages %}
+    <a class="page-btn"
+       href="{{ url_for('logs.logs', page=page+1, date_from=f.get('date_from', ''), date_to=f.get('date_to', ''), location=f.get('location', ''), density=f.get('density', '')) }}"
+       aria-label="Next page">
+        &rarr;
+    </a>
+    {% else %}
+    <span class="page-btn disabled">&rarr;</span>
+    {% endif %}
+
+</nav>
+{% endif %}

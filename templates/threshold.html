@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="d h-lg">Thresholds</h1>
+<p class="m lead sm">Choose how many people make a place medium or high. One setting applies to every location.</p>
+<div class="tscale" aria-hidden="true" style="grid-template-columns:{{ [low,8]|max }}fr {{ [medium-low,8]|max }}fr 10fr">
+  <div class="lo"><b>Low</b><div>0 to {{ low }}</div></div>
+  <div class="me"><b>Medium</b><div>{{ low + 1 }} to {{ medium }}</div></div>
+  <div class="hi"><b>High</b><div>Over {{ medium }}</div></div>
+</div>
+<form method="post" class="c grid16">
+  <label class="f"><span>Low, up to this many people</span><input name="low" type="number" min="0" value="{{ low }}" required></label>
+  <label class="f"><span>Medium, up to this many people</span><input name="medium" type="number" min="1" value="{{ medium }}" required></label>
+  <p class="m" style="margin:0">Anything above the medium limit counts as High. Medium must be larger than Low.</p>
+  <button class="btn">Save thresholds</button>
+</form>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="d h-lg">Locations</h1>
+<p class="m lead sm">Switch a place on to start counting people there.</p>
+<form method="post" class="addrow">
+  <label class="f" style="flex:1"><span>New location</span><input name="name" required></label>
+  <button class="btn" style="width:auto">Add</button>
+</form>
+
+<div class="c list">
+  {% for l in locations %}
+  <form method="post" class="lrow">
+    <input type="hidden" name="id" value="{{ l.LOCATIONID }}">
+
+    <input type="hidden" name="status"
+           value="{{ 'inactive' if l.STATUS == 'active' else 'active' }}">
+
+    <i class="dot {{ 'on' if l.STATUS == 'active' }}"></i>
+
+    <div style="flex:1">
+      <div class="nm">{{ l.LOCATION_NAME }}</div>
+      <div class="m xs">
+        {{ 'On' if l.STATUS == 'active' else 'Off' }}
+      </div>
+    </div>
+
+    <button class="sw" type="submit"
+            role="switch"
+            aria-checked="{{ 'true' if l.STATUS == 'active' else 'false' }}"
+            aria-label="Toggle {{ l.LOCATION_NAME }}">
+    </button>
+  </form>
+  {% else %}
+    <p class="m" style="padding:14px 0">No locations yet.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

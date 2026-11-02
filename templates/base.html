@@ -1,0 +1,128 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0E1116">
+
+    <title>UCrowdLens</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="p{{ ' has-tb' if session.get('admin') else '' }}">
+
+        {% if not hide_header %}
+        <header class="top">
+            <a class="brand" href="/">
+                <svg
+                    viewBox="0 0 32 32"
+                    width="30"
+                    height="30"
+                    fill="none"
+                    stroke="#D7FF3C"
+                    stroke-width="2.4"
+                    aria-hidden="true">
+                    <circle cx="16" cy="16" r="13"/>
+                    <circle cx="11" cy="14" r="2.4"
+                            fill="#D7FF3C" stroke="none"/>
+                    <circle cx="19.5" cy="12.5" r="2"
+                            fill="#D7FF3C" stroke="none"/>
+                    <circle cx="16" cy="20" r="3"
+                            fill="#D7FF3C" stroke="none"/>
+                </svg>
+
+                <span class="d">UCrowdLens</span>
+            </a>
+
+            {% if session.get('admin') %}
+                <a class="pill-link" href="/logout">Log out</a>
+            {% else %}
+                <a class="pill-link" href="/login">Admin login</a>
+            {% endif %}
+        </header>
+        {% endif %}
+
+        <main class="content">
+            {% for m in get_flashed_messages() %}
+                <div class="msg" role="status">{{ m }}</div>
+            {% endfor %}
+
+            {% block content %}{% endblock %}
+        </main>
+
+        {% if session.get('admin') %}
+        <nav class="tb" aria-label="Main">
+
+            <a href="/"
+               {% if request.endpoint == 'dashboard' %}
+                   aria-current="page"
+               {% endif %}>
+                <svg width="22" height="22" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3"/>
+                    <circle cx="12" cy="12" r="8"/>
+                </svg>
+                Live
+            </a>
+
+            <a href="/locations"
+               {% if request.endpoint == 'locations.locations' or request.path == '/locations' %}
+                   aria-current="page"
+               {% endif %}>
+                <svg width="22" height="22" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11z"/>
+                    <circle cx="12" cy="10" r="2.5"/>
+                </svg>
+                Places
+            </a>
+
+            <a href="/threshold"
+               {% if request.path == '/threshold' %}
+                   aria-current="page"
+               {% endif %}>
+                <svg width="22" height="22" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                    <path d="M4 8h10M18 8h2M4 16h2M10 16h10"/>
+                    <circle cx="16" cy="8" r="2"/>
+                    <circle cx="8" cy="16" r="2"/>
+                </svg>
+                Limits
+            </a>
+
+            <a href="/logs"
+               {% if request.path == '/logs' %}
+                   aria-current="page"
+               {% endif %}>
+                <svg width="22" height="22" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 6h14M5 12h14M5 18h9"/>
+                </svg>
+                Logs
+            </a>
+
+        </nav>
+        {% endif %}
+
+    </div>
+</body>
+</html>

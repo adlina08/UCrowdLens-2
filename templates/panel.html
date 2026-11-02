@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="2">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head><body class="frame">
+<section class="hero lvl-{{ level }}" aria-live="polite">
+  <div class="hero-top"><span>NOW AT {{ name.split(',')[0]|upper }}</span><span class="tag">{{ level|upper }}</span></div>
+  <div class="d big">{{ count }}<span>{{ 'person' if count == 1 else 'people' }}</span></div>
+  <div class="verdict">{{ {'Low':'Not crowded right now','Medium':'Getting busy','High':'Very crowded right now'}[level] }}</div>
+  {% if error %}<div class="verdict">⚠ {{ error }}</div>{% endif %}
+  <div class="meter">
+    <i class="{{ 'on' if level in ['Low','Medium','High'] }}"></i>
+    <i class="{{ 'on' if level in ['Medium','High'] }}"></i>
+    <i class="{{ 'on' if level == 'High' }}"></i>
+  </div>
+  <div class="meter-l"><span>Low</span><span>Medium</span><span>High</span></div>
+</section>
+</body></html>

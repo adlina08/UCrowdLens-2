@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+{% set hide_header = true %}
+{% block content %}
+
+<div class="login-box">
+  <div class="login-logo">
+    <svg viewBox="0 0 32 32" width="64" height="64" fill="none"
+         stroke="#D7FF3C" stroke-width="1.6" aria-hidden="true">
+      <circle cx="16" cy="16" r="13"/>
+      <circle cx="11" cy="14" r="2.4" fill="#D7FF3C" stroke="none"/>
+      <circle cx="19.5" cy="12.5" r="2" fill="#D7FF3C" stroke="none"/>
+      <circle cx="16" cy="20" r="3" fill="#D7FF3C" stroke="none"/>
+    </svg>
+    <span class="d">UCrowdLens</span>
+  </div>
+
+  <h1 class="d h-xl">Admin<br>login</h1>
+  <p class="m lead">Sign in to manage locations, thresholds and logs.</p>
+
+  <form method="post" class="c grid16">
+    <label class="f">
+      <span>Username</span>
+      <input name="username" autocomplete="username" required>
+    </label>
+
+    <label class="f">
+      <span>Password</span>
+      <input name="password" type="password"
+             autocomplete="current-password" required>
+    </label>
+
+    <button class="btn">Log in</button>
+  </form>
+
+  <a class="back" href="/">Back to dashboard</a>
+</div>
+
+{% endblock %}
