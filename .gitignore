@@ -1,0 +1,32 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# SQLite databases
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Training datasets and outputs
+datasets/
+runs/
+
+# Uploaded files
+uploads/
+temp/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db

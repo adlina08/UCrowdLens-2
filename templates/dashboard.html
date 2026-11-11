@@ -107,6 +107,23 @@
         </p>
     </section>
 
+    <!-- UPLOAD IMAGE / VIDEO -->
+    <section class="dashboard-upload c">
+        <div class="section-heading">
+            <div>
+                <p class="m xs">OFFLINE ANALYSIS</p>
+                <h2 class="d h-md">Upload Image or Video</h2>
+            </div>
+        </div>
+        <p class="m xs dashboard-footnote">Analyze media with the trained YOLOv8 model. Uploaded media does not affect live monitoring logs.</p>
+        <form action="{{ url_for('upload.analyze') }}" method="post" enctype="multipart/form-data" class="upload-form">
+            <label for="media-upload" class="m xs">CHOOSE AN IMAGE OR VIDEO</label>
+            <input id="media-upload" type="file" name="media" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/x-msvideo,video/x-matroska,video/webm" required>
+            <button type="submit" class="upload-button">Analyze File</button>
+        </form>
+    </section>
+
+
 </div>
 
 {% endblock %}

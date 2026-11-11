@@ -52,6 +52,14 @@ def init_db():
         )
     """)
 
+    query("""CREATE TABLE IF NOT EXISTS SYSTEM_SETTINGS (
+        SETTING_KEY TEXT PRIMARY KEY,
+        SETTING_VALUE TEXT NOT NULL
+    )""")
+    if not query("SELECT 1 FROM SYSTEM_SETTINGS WHERE SETTING_KEY='privacy_blur'"):
+        query("INSERT INTO SYSTEM_SETTINGS (SETTING_KEY, SETTING_VALUE) VALUES (?, ?)",
+              ('privacy_blur', '1'))
+
     # Create default admin only if no admin exists
     if not query("SELECT 1 FROM ADMIN"):
         query(

@@ -1241,3 +1241,362 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     }
 }
 
+
+/* Image/video upload, using the existing dashboard palette */
+.dashboard-upload { padding: 26px; border: 1px solid #3b424c; border-radius: 14px; }
+.upload-form { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 18px; }
+.upload-form input { max-width: 100%; color: inherit; }
+.upload-button { background: #d7ff3c; color: #0e1116; border: 0; border-radius: 24px; padding: 12px 20px; font-weight: 700; cursor: pointer; }
+.upload-result { max-width: 980px; margin: 20px auto; }
+.upload-preview { display: block; width: 100%; max-height: 650px; object-fit: contain; margin: 20px 0; border-radius: 12px; }
+
+
+/* ==========================================================
+   UCrowdLens responsive dashboard refresh
+   Desktop: live cards side by side, history + uploads below
+   Tablet: two columns
+   Phone: one stacked column
+   Scoped to dashboard so admin pages retain their styling.
+   ========================================================== */
+
+.dashboard-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    gap: clamp(14px, 1.7vw, 24px);
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+}
+
+.dashboard-layout > section { min-width: 0; max-width: 100%; }
+.dashboard-heading { grid-column: 1 / -1; }
+.dashboard-count { grid-column: 1; }
+.dashboard-camera { grid-column: 2; }
+.dashboard-chart { grid-column: 1 / -1; }
+.dashboard-upload { grid-column: 1 / -1; }
+
+.dashboard-count,
+.dashboard-camera,
+.dashboard-chart,
+.dashboard-upload {
+    background: #171B22;
+    border: 1px solid #303742;
+    border-radius: 18px;
+    padding: clamp(16px, 1.8vw, 26px);
+    overflow: hidden;
+}
+
+.dashboard-heading .h-xl {
+    font-size: clamp(48px, 5vw, 76px);
+    line-height: .9;
+}
+.dashboard-heading .location-selector { max-width: 480px; }
+.dashboard-layout .section-heading .h-md {
+    font-size: clamp(25px, 2.2vw, 34px);
+    overflow-wrap: anywhere;
+}
+.dashboard-count .panel-frame {
+    display: block;
+    width: 100%;
+    min-height: 260px;
+    height: clamp(260px, 27vw, 410px);
+    border: 0;
+    border-radius: 14px;
+    background: #0e1116;
+}
+.dashboard-camera .feed {
+    width: 100%;
+    height: clamp(260px, 27vw, 410px);
+    min-height: 260px;
+    overflow: hidden;
+    border-radius: 14px;
+}
+.dashboard-camera .feed img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.dashboard-chart .chart-image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    max-height: 330px;
+    object-fit: contain;
+    border-radius: 12px;
+}
+.dashboard-upload { padding: clamp(16px, 1.8vw, 26px); }
+.dashboard-upload .dashboard-footnote { max-width: 680px; }
+.dashboard-upload .upload-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 12px 18px;
+    margin-top: 20px;
+}
+.dashboard-upload .upload-form label {
+    flex-basis: 100%;
+}
+.dashboard-upload input[type="file"] {
+    flex: 1 1 340px;
+    min-width: 0;
+    max-width: 100%;
+    padding: 12px;
+    border: 1px dashed #596272;
+    border-radius: 12px;
+    background: #0e1116;
+    color: #f2f4ef;
+    font: inherit;
+}
+.dashboard-upload input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    padding: 9px 12px;
+    background: #29313d;
+    color: #f2f4ef;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.dashboard-upload .upload-button {
+    min-height: 45px;
+    padding: 12px 24px;
+    white-space: nowrap;
+}
+.dashboard-upload :is(input, button):focus-visible,
+.dashboard-heading select:focus-visible {
+    outline: 2px solid #d7ff3c;
+    outline-offset: 3px;
+}
+
+/* Large monitors: make full use of the available width. */
+@media (min-width: 1600px) {
+    .p { max-width: 1680px; }
+    .dashboard-layout { gap: 26px; }
+    .dashboard-count .panel-frame,
+    .dashboard-camera .feed { height: 450px; }
+}
+
+/* Tablets and smaller laptops */
+@media (min-width: 768px) and (max-width: 1100px) {
+    .dashboard-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+    .dashboard-count .panel-frame,
+    .dashboard-camera .feed { height: 290px; min-height: 290px; }
+}
+
+/* Phones: cards stack vertically in a logical reading order. */
+@media (max-width: 767px) {
+    .p { padding-left: 16px; padding-right: 16px; }
+    .dashboard-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+    .dashboard-heading,
+    .dashboard-count,
+    .dashboard-camera,
+    .dashboard-chart,
+    .dashboard-upload { grid-column: 1 / -1; }
+    .dashboard-heading .h-xl { font-size: clamp(48px, 13vw, 68px); }
+    .dashboard-heading .location-selector { max-width: 100%; }
+    .dashboard-count,
+    .dashboard-camera,
+    .dashboard-chart,
+    .dashboard-upload { padding: 16px; border-radius: 16px; }
+    .dashboard-count .panel-frame { height: 290px; min-height: 290px; }
+    .dashboard-camera .feed { height: auto; min-height: 210px; aspect-ratio: 16 / 10; }
+    .dashboard-camera .feed img { min-height: 210px; }
+    .dashboard-chart .chart-image { max-height: 280px; }
+    .dashboard-upload .upload-form { flex-direction: column; align-items: stretch; }
+    .dashboard-upload .upload-form label { flex-basis: auto; }
+    .dashboard-upload input[type="file"] { flex: none; width: 100%; }
+    .dashboard-upload .upload-button { width: 100%; }
+}
+@media (max-width: 380px) {
+    .dashboard-count .panel-frame { height: 275px; min-height: 275px; }
+    .dashboard-layout .section-heading .h-md { font-size: 24px; }
+}
+
+
+/* ========================================================
+   Responsive design for ALL UCrowdLens pages
+   Dashboard, login, locations, thresholds, logs, upload result
+   ======================================================== */
+
+/* Shared content: prevent forms and long location names from overflowing */
+.content, .content > *, .c, .f, .rec, .lrow { min-width: 0; }
+.content { overflow-wrap: anywhere; }
+.content .h-lg { font-size: clamp(36px, 4.2vw, 58px); }
+.content .lead { max-width: 68ch; }
+.content input, .content select, .content button { max-width: 100%; }
+.content input, .content select { font-size: 16px; }
+.content .btn, .content .pill-link, .content .sw { touch-action: manipulation; }
+
+/* Login: centered, readable form on desktops; full-width on phones */
+.login-box {
+    width: min(100%, 470px);
+    margin: clamp(28px, 6vh, 90px) auto 50px;
+}
+.login-box .login-logo { margin-top: 0; }
+.login-box .h-xl {
+    text-align: center;
+    font-size: clamp(54px, 6vw, 78px);
+    margin-top: 26px;
+}
+.login-box .lead { text-align: center; margin: 12px auto 24px; }
+.login-box .c { padding: clamp(18px, 3vw, 28px); }
+.login-box .back { margin-top: 16px; }
+
+/* Admin pages: comfortable maximum reading width on wide monitors */
+.content:has(.addrow),
+.content:has(.tscale),
+.content:has(.rec-h) {
+    max-width: 1100px;
+    margin-inline: auto;
+}
+.content:has(.login-box) { max-width: none; }
+
+/* Locations: name input and action button stay aligned */
+.addrow { width: 100%; }
+.addrow .f { flex: 1 1 auto; min-width: 0; }
+.addrow .btn { width: auto; min-width: 110px; flex: 0 0 auto; }
+.lrow > div { min-width: 0; overflow-wrap: anywhere; }
+
+/* Thresholds: labels stay readable on narrow screens */
+.tscale { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.tscale > div { min-width: 0; overflow-wrap: anywhere; }
+.tscale .lo, .tscale .me, .tscale .hi { border-radius: 12px; }
+
+/* Logs: responsive filters and records */
+.content:has(.rec-h) form.c { width: 100%; }
+.content:has(.rec-h) .rec > div:nth-child(2) { min-width: 0; }
+.rec-h { flex-wrap: wrap; }
+.pagination { display: flex; flex-wrap: wrap; gap: 8px; }
+.pagination a { min-height: 40px; }
+
+/* Offline analysis result: images/video streams scale to the viewport */
+.upload-result { width: min(100%, 1100px); margin: 0 auto; }
+.upload-result .h-xl { font-size: clamp(42px, 6vw, 74px); }
+.upload-result .upload-preview {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 72vh;
+    object-fit: contain;
+    background: #0a0d12;
+    border-radius: 16px;
+    margin: 18px 0;
+}
+.upload-result .pill-link { margin-top: 8px; }
+
+/* Panel iframe: compact status card, no clipping on phones */
+body.frame .hero { min-height: 0; }
+body.frame .hero .big { font-size: clamp(42px, 6vw, 80px); }
+body.frame .hero-top { flex-wrap: wrap; overflow-wrap: anywhere; }
+body.frame .verdict { overflow-wrap: anywhere; }
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1100px) {
+    .login-box { margin-top: 7vh; }
+    .content:has(.addrow), .content:has(.tscale),
+    .content:has(.rec-h) { max-width: 900px; }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .login-box { margin: clamp(18px, 5vh, 48px) auto 36px; }
+    .login-box .login-logo svg { width: 54px; height: 54px; }
+    .login-box .h-xl { font-size: clamp(52px, 15vw, 70px); margin-top: 20px; }
+    .login-box .c { padding: 18px; border-radius: 18px; }
+    .login-box .lead { margin-bottom: 20px; }
+
+    .addrow { flex-direction: column; align-items: stretch; gap: 12px; }
+    .addrow .f { width: 100%; flex: none; }
+    .addrow .btn { width: 100% !important; min-height: 48px; }
+    .list { padding: 4px 14px; }
+    .lrow { gap: 10px; }
+    .lrow .nm { font-size: 14px; }
+
+    .tscale { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+    .tscale > div { padding: 12px 7px; font-size: 12px; }
+    .tscale div div { font-size: 11px; }
+
+    .content:has(.rec-h) .two { grid-template-columns: minmax(0, 1fr); }
+    .content:has(.rec-h) form.c { padding: 16px; }
+    .rec { gap: 8px; }
+    .rec .n { width: 44px; font-size: 32px; }
+    .rec .nm { font-size: 13px; }
+    .lv { padding: 4px 7px; font-size: 11px; flex: none; }
+    .rec-h { align-items: flex-start; }
+
+    .upload-result .upload-preview { max-height: 60vh; border-radius: 12px; }
+    .upload-result .h-md { font-size: clamp(24px, 7vw, 34px); }
+
+    body.frame .hero { padding: 12px; border-radius: 14px; }
+    body.frame .hero .big { margin-top: 12px; font-size: clamp(42px, 14vw, 68px); }
+    body.frame .meter { margin-top: 10px; }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+    .p { padding-inline: 12px; }
+    .brand .d { font-size: 21px; }
+    .pill-link { padding: 9px 10px; font-size: 11px; }
+    .tb { width: calc(100% - 16px); padding: 5px; gap: 0; }
+    .tb a { font-size: 10px; }
+    .tscale > div { padding: 9px 5px; }
+}
+
+/* Admin settings */
+.settings-page { max-width: 1100px; margin: 0 auto; }
+.settings-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; align-items: start; }
+.settings-card { padding: clamp(18px,2.5vw,28px); min-width: 0; }
+.settings-card .h-md { margin-bottom: 12px; }
+.settings-card .tscale { margin: 20px 0; }
+.settings-toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px; border: 1px solid #39414d; border-radius: 14px; cursor: pointer; }
+.settings-toggle-row strong, .settings-toggle-row small { display: block; }
+.settings-toggle-row small { margin-top: 4px; }
+.settings-toggle-row input { width: 24px; height: 24px; flex: none; accent-color: #d7ff3c; cursor: pointer; }
+@media (max-width: 767px) { .settings-grid { grid-template-columns: minmax(0,1fr); } .settings-card { padding: 16px; } }
+
+
+/* ===== FIXES: equal-height Settings cards and full People Count panel ===== */
+.settings-grid { align-items: stretch; }
+.settings-card { display: flex; flex-direction: column; height: 100%; }
+.settings-card > form { flex: 1; display: flex; flex-direction: column; }
+.settings-card > form > .btn { margin-top: auto; }
+
+/* The iframe is a separate document. Its green hero fills the full viewport. */
+.dashboard-count { display: flex; flex-direction: column; }
+.dashboard-count .panel-frame {
+    display: block;
+    width: 100%;
+    flex: 1 0 auto;
+    height: clamp(290px, 27vw, 410px);
+    min-height: 290px;
+    border: 0;
+    background: transparent;
+}
+html:has(> body.frame), body.frame { height: 100%; min-height: 100%; }
+body.frame .hero {
+    width: 100%; height: 100%; min-height: 100%;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(16px, 2.5vw, 25px);
+    border-radius: 14px;
+}
+body.frame .hero-top { align-items: flex-start; gap: 10px; }
+body.frame .hero-top .panel-location {
+    display: block;
+    flex: 1;
+    min-width: 0;
+    font-size: clamp(15px, 1.45vw, 19px);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: .01em;
+    overflow-wrap: anywhere;
+}
+@media (max-width: 767px) {
+    .dashboard-count .panel-frame { height: 300px; min-height: 300px; }
+    body.frame .hero-top .panel-location { font-size: 15px; }
+}

@@ -1,6 +1,9 @@
-path: /Users/adlina/Downloads/UCrowdLens 2/datasets/CrowdHuman dataset/dataset
+path: C:/Users/adlin/Downloads/UCrowdLens-2/datasets/CrowdHuman dataset/dataset
+
 train: train/images
 val: val/images
 test: test/images
+
+nc: 1
 names:
   0: person

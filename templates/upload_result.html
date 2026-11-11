@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="upload-result">
+  <p class="m xs">UCROWDLENS ANALYSIS</p>
+  <h1 class="d h-xl">Upload Results.</h1>
+  {% if error %}
+    <p role="alert">{{ error }}</p>
+  {% elif kind == 'image' %}
+    <h2 class="d h-md">{{ count }} people · {{ level }} density</h2>
+    <img class="upload-preview" src="data:image/jpeg;base64,{{ image_data }}" alt="Blurred uploaded image">
+  {% elif kind == 'video' %}
+    <p class="m">Video analysis runs on CPU. Counts and density are shown in the stream.</p>
+    <img class="upload-preview" src="{{ url_for('upload.uploaded_video', token=token) }}" alt="Blurred video analysis stream">
+    <p class="m xs">Video is processed temporarily, up to 2 minutes. Reloading will not replay the upload.</p>
+  {% endif %}
+  <p><a class="pill-link" href="{{ url_for('public.dashboard') }}">Back to dashboard</a></p>
+</section>
+{% endblock %}

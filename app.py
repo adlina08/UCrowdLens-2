@@ -14,6 +14,7 @@ from public import public_bp
 from auth import auth_bp
 from admin import admin_bp
 from logs import logs_bp
+from uploads import upload_bp
 
 app = Flask(
     __name__,
@@ -21,7 +22,8 @@ app = Flask(
     static_folder=os.path.join(BASE_DIR, "static")
 )
 
-app.secret_key = "ucrowdlens-change-me"
+app.secret_key = os.environ.get("UCROWDLENS_SECRET_KEY", "ucrowdlens-change-me")
+app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
 
 init_db()
 
@@ -29,6 +31,7 @@ app.register_blueprint(public_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(logs_bp)
+app.register_blueprint(upload_bp)
 
 if __name__ == "__main__":
     threading.Thread(

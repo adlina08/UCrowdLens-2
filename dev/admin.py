@@ -117,3 +117,37 @@ def threshold():
         low=low,
         medium=med
     )
+
+
+# Admin-only settings: crowd thresholds and webcam preview privacy
+@admin_bp.route('/settings', methods=['GET', 'POST'])
+@login_required
+def settings():
+    if request.method == 'POST':
+        section = request.form.get('section')
+        if section == 'threshold':
+            try:
+                low = int(request.form['low'])
+                medium = int(request.form['medium'])
+            except (KeyError, ValueError):
+                flash('Enter valid threshold numbers.')
+                return redirect(url_for('admin.settings'))
+            if not 0 <= low < medium:
+                flash('Medium must be greater than Low.')
+            else:
+                query('UPDATE THRESHOLD SET LOW=?, MEDIUM=? WHERE THRESHOLDID=1', (low, medium))
+                flash('Crowd thresholds saved.')
+        elif section == 'privacy':
+            enabled = '1' if request.form.get('privacy_blur') == 'on' else '0'
+            query('UPDATE SYSTEM_SETTINGS SET SETTING_VALUE=? WHERE SETTING_KEY=?',
+                  (enabled, 'privacy_blur'))
+            flash('Privacy blur setting saved. The next camera frames will use it.')
+        else:
+            flash('Unknown settings section.')
+        return redirect(url_for('admin.settings'))
+
+    thresholds = query('SELECT LOW, MEDIUM FROM THRESHOLD WHERE THRESHOLDID=1')
+    t = thresholds[0] if thresholds else {'LOW': 10, 'MEDIUM': 20}
+    row = query("SELECT SETTING_VALUE FROM SYSTEM_SETTINGS WHERE SETTING_KEY='privacy_blur'")
+    return render_template('settings.html', low=t['LOW'], medium=t['MEDIUM'],
+                           privacy_blur=(not row or row[0]['SETTING_VALUE'] == '1'))

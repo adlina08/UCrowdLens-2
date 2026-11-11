@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="settings-page">
+  <p class="m xs">SYSTEM CONFIGURATION</p>
+  <h1 class="d h-lg">Settings.</h1>
+  <p class="m lead">Manage crowd density limits and camera preview privacy.</p>
+  <div class="settings-grid">
+    <section class="c settings-card">
+      <h2 class="d h-md">Crowd Density Threshold</h2>
+      <p class="m">Set the number of people for each density level.</p>
+      <div class="tscale" aria-hidden="true" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        <div class="lo"><b>Low</b><div>0–{{ low }}</div></div>
+        <div class="me"><b>Medium</b><div>{{ low + 1 }}–{{ medium }}</div></div>
+        <div class="hi"><b>High</b><div>{{ medium + 1 }}+</div></div>
+      </div>
+      <form method="post" class="grid16">
+        <input type="hidden" name="section" value="threshold">
+        <label class="f"><span>Low maximum</span><input type="number" min="0" name="low" value="{{ low }}" required></label>
+        <label class="f"><span>Medium maximum</span><input type="number" min="1" name="medium" value="{{ medium }}" required></label>
+        <button type="submit" class="btn">Save Thresholds</button>
+      </form>
+    </section>
+    <section class="c settings-card">
+      <h2 class="d h-md">Privacy Settings</h2>
+      <p class="m">Choose whether the live webcam preview is blurred. Person detection still uses the original frame for accuracy.</p>
+      <form method="post" class="grid16">
+        <input type="hidden" name="section" value="privacy">
+        <label class="settings-toggle-row" for="privacy_blur">
+          <span><strong>Enable Privacy Blur</strong><small class="m">Blur the live camera preview</small></span>
+          <input id="privacy_blur" name="privacy_blur" type="checkbox" {% if privacy_blur %}checked{% endif %}>
+        </label>
+        <p class="m xs">This setting affects the live preview only. Crowd logs contain counts, density and timestamps, not camera images.</p>
+        <button type="submit" class="btn">Save Privacy Setting</button>
+      </form>
+    </section>
+  </div>
+</div>
+{% endblock %}
